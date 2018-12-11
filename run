@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+haxe game.hxml -hl game.hl
+hl game.hl
