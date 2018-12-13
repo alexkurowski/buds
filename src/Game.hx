@@ -1,15 +1,12 @@
-import input.Input;
-import abstraction.Abstraction;
-import presentation.Presentation;
-
-enum Presentations {
+enum GameState {
   Gameplay;
 }
 
 class Game extends hxd.App {
+  public static var state : GameState;
   public static var input : Input;
-  public static var abstraction : Abstraction;
-  public static var presentation : Presentation;
+  public static var controller : controller.Controller;
+  public static var abstraction : abstraction.Abstraction;
 
   private static var game : Game;
   // var time : Float = 0;
@@ -18,8 +15,9 @@ class Game extends hxd.App {
 
   override function init() {
     input = new Input(s3d);
-    abstraction = new Abstraction();
-    presentation = new Presentation(s2d, s3d);
+
+    abstraction = new abstraction.Abstraction();
+    setState(Gameplay);
 
     // // FPS text
     // fps = new h2d.Text(hxd.res.DefaultFont.get());
@@ -67,6 +65,8 @@ class Game extends hxd.App {
   }
 
   override function update(dt : Float) {
+    input.update();
+
     // time += dt;
 
     // fps.text = "FPS: " + Std.string(1 / dt);
@@ -74,12 +74,35 @@ class Game extends hxd.App {
     // s3d.camera.pos.set(Math.cos(time) * dist, Math.sin(time) * dist, dist * 0.7 * Math.sin(time));
     // obj2.setRotationAxis(-0.5, 2, Math.cos(time), time + Math.PI / 2);
 
-    presentation.update();
+    if (controller != null) {
+      controller.update();
+    }
 
     Sys.sleep(1/60 - dt);
   }
 
   public static function main() {
     game = new Game();
+  }
+
+  public static function setState(newState : GameState) {
+    if (newState != state) {
+      switch (newState) {
+        case Gameplay:
+          game.changeStateTo(newState);
+      }
+    }
+  }
+
+  function changeStateTo(newState : GameState) {
+    state = newState;
+
+    if (controller != null) {
+      controller.destroy();
+    }
+
+    controller = switch (newState) {
+      case Gameplay: new controller.Gameplay(s2d, s3d);
+    }
   }
 }

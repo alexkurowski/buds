@@ -2,6 +2,7 @@ package presentation;
 
 class Card {
   var mesh : h3d.scene.Mesh;
+  var position : h3d.col.Point;
 
   static inline var sizeX : Float = 0.2;
   static inline var sizeY : Float = 0.001;
@@ -17,7 +18,8 @@ class Card {
     mesh.material.color.setColor(0xf0f0f0);
     mesh.material.shadows = true;
 
-    mesh.setPosition(-sizeX * 0.5, 0, -sizeZ * 0.5);
+    position = new h3d.col.Point();
+    moveTo(position);
     mesh.scaleX = sizeX;
     mesh.scaleY = sizeY;
     mesh.scaleZ = sizeZ;
@@ -39,6 +41,7 @@ class Card {
   }
 
   public function moveTo(point : h3d.col.Point) {
+    trace(point);
     mesh.x = point.x - sizeX * 0.5;
     mesh.z = point.z - sizeZ * 0.5;
   }

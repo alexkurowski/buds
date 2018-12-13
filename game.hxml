@@ -1,5 +1,6 @@
 -lib heaps
 -lib hlsdl
+-cp sys
 -cp src
 -main Game
 -D windowSize=800x600
