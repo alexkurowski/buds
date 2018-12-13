@@ -87,7 +87,7 @@ class Game extends hxd.App {
 
   public static function setState(newState : GameState) {
     if (newState != state) {
-      switch (newState) {
+      switch newState {
         case Gameplay:
           game.changeStateTo(newState);
       }
@@ -101,7 +101,7 @@ class Game extends hxd.App {
       controller.destroy();
     }
 
-    controller = switch (newState) {
+    controller = switch newState {
       case Gameplay: new controller.Gameplay(s2d, s3d);
     }
   }
