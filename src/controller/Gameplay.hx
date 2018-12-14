@@ -3,7 +3,7 @@ package controller;
 class Gameplay extends Controller {
   var presentation : presentation.Gameplay;
 
-  var pickedCard : presentation.Card;
+  var pickedCard : presentable.Card;
 
   public function new(s2d, s3d) {
     super(s2d, s3d);
@@ -23,13 +23,13 @@ class Gameplay extends Controller {
     var dz : Float = 0;
     var speed : Float = 0.1;
 
-    if (input.isDownUP())    dz += speed;
-    if (input.isDownDOWN())  dz -= speed;
-    if (input.isDownLEFT())  dx -= speed;
-    if (input.isDownRIGHT()) dx += speed;
+    if (input.isDown(CAMERA_UP))    dz += speed;
+    if (input.isDown(CAMERA_DOWN))  dz -= speed;
+    if (input.isDown(CAMERA_LEFT))  dx -= speed;
+    if (input.isDown(CAMERA_RIGHT)) dx += speed;
 
-    // if (input.isPressed(input.wheelUp))   dy += 1;
-    // if (input.isPressed(input.wheelDown)) dy -= 1;
+    if (input.isPressed(CAMERA_IN))  dy += 1;
+    if (input.isPressed(CAMERA_OUT)) dy -= 1;
 
     if (dx != 0 || dy != 0 || dz != 0) {
       s3d.camera.pos.x += dx;
@@ -41,8 +41,8 @@ class Gameplay extends Controller {
   }
 
   function cardPickup() {
-    if (input.isPressedMOUSE()) {
-      pickedCard = presentation.findCardAt(input.tableMouse());
+    if (input.isPressed(INTERACT)) {
+      pickedCard = presentation.findCardAt(input.tablePoint);
 
       if (pickedCard != null) {
         pickedCard.pickUp();
@@ -50,8 +50,8 @@ class Gameplay extends Controller {
     }
 
     if (pickedCard != null) {
-      if (input.isDownMOUSE()) {
-        pickedCard.moveTo(input.tableMouse());
+      if (input.isDown(INTERACT)) {
+        pickedCard.moveTo(input.tablePoint);
       } else {
         pickedCard.putDown();
         pickedCard = null;

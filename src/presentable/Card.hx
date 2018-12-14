@@ -1,4 +1,4 @@
-package presentation;
+package presentable;
 
 class Card {
   var mesh : h3d.scene.Mesh;
@@ -33,7 +33,7 @@ class Card {
   }
 
   public function pickUp() {
-    mesh.y = 0.5;
+    mesh.y = 0.25;
   }
 
   public function putDown() {

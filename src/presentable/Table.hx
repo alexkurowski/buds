@@ -1,4 +1,4 @@
-package presentation;
+package presentable;
 
 class Table {
   var mesh : h3d.scene.Mesh;

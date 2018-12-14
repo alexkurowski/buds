@@ -1,5 +1,7 @@
 package presentation;
 
+import presentable.*;
+
 class Gameplay extends Presentation {
   var table : Table;
   var cards : Array<Card>;

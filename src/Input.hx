@@ -1,62 +1,90 @@
 import hxd.Key in K;
 
+enum Action {
+  CAMERA_UP;
+  CAMERA_DOWN;
+  CAMERA_LEFT;
+  CAMERA_RIGHT;
+  CAMERA_IN;
+  CAMERA_OUT;
+
+  INTERACT;
+}
+
 class Input {
-  public static inline var up        : Int = K.W;
-  public static inline var down      : Int = K.S;
-  public static inline var left      : Int = K.A;
-  public static inline var right     : Int = K.D;
-  public static inline var wheelUp   : Int = K.MOUSE_WHEEL_UP;
-  public static inline var wheelDown : Int = K.MOUSE_WHEEL_DOWN;
+  var keyCameraUp       : Int = K.UP;
+  var keyCameraUpAlt    : Int = K.W;
+  var keyCameraDown     : Int = K.DOWN;
+  var keyCameraDownAlt  : Int = K.S;
+  var keyCameraLeft     : Int = K.LEFT;
+  var keyCameraLeftAlt  : Int = K.A;
+  var keyCameraRight    : Int = K.RIGHT;
+  var keyCameraRightAlt : Int = K.D;
+  var keyCameraIn       : Int = K.MOUSE_WHEEL_DOWN;
+  var keyCameraInAlt    : Int = 0;
+  var keyCameraOut      : Int = K.MOUSE_WHEEL_UP;
+  var keyCameraOutAlt   : Int = 0;
+  var keyInteract       : Int = K.MOUSE_LEFT;
+  var keyInteractAlt    : Int = 0;
 
   var window : hxd.Window;
   var camera : h3d.Camera;
   var tablePlane : h3d.col.Plane;
-  var tablePoint : h3d.col.Point;
 
-  var dirty : Bool = true;
+  public var mousePoint(default, null) : h2d.col.Point;
+  public var tablePoint(default, null) : h3d.col.Point;
 
   public function new(s3d) {
+    hxd.Key.ALLOW_KEY_REPEAT = false;
+
     window = hxd.Window.getInstance();
     camera = s3d.camera;
     tablePlane = new h3d.col.Plane(0, 1, 0, 0);
   }
 
   public function update() {
-    dirty = true;
+    mousePoint = new h2d.col.Point(window.mouseX, window.mouseY);
+    tablePoint = camera
+      .rayFromScreen(mousePoint.x, mousePoint.y)
+      .intersect(tablePlane);
   }
 
-  public function mouseX() : Int return window.mouseX;
-  public function mouseY() : Int return window.mouseY;
+  public function isDown(action : Action) : Bool {
+    return K.isDown(actionToKey(action)) ||
+           K.isDown(actionToKeyAlt(action));
+  }
 
-  public function tableMouseX() : Float return tableMouse().x;
-  public function tableMouseY() : Float return tableMouse().y;
-  public function tableMouseZ() : Float return tableMouse().z;
+  public function isPressed(action : Action) : Bool {
+    return K.isPressed(actionToKey(action)) ||
+           K.isPressed(actionToKeyAlt(action));
+  }
 
-  public function isDownUP()        : Bool return K.isDown    (K.UP);
-  public function isPressedUP()     : Bool return K.isPressed (K.UP);
-  public function isReleasedUP()    : Bool return K.isReleased(K.UP);
-  public function isDownDOWN()      : Bool return K.isDown    (K.DOWN);
-  public function isPressedDOWN()   : Bool return K.isPressed (K.DOWN);
-  public function isReleasedDOWN()  : Bool return K.isReleased(K.DOWN);
-  public function isDownLEFT()      : Bool return K.isDown    (K.LEFT);
-  public function isPressedLEFT()   : Bool return K.isPressed (K.LEFT);
-  public function isReleasedLEFT()  : Bool return K.isReleased(K.LEFT);
-  public function isDownRIGHT()     : Bool return K.isDown    (K.RIGHT);
-  public function isPressedRIGHT()  : Bool return K.isPressed (K.RIGHT);
-  public function isReleasedRIGHT() : Bool return K.isReleased(K.RIGHT);
+  public function isReleased(action : Action) : Bool {
+    return K.isReleased(actionToKey(action)) ||
+           K.isReleased(actionToKeyAlt(action));
+  }
 
-  public function isDownMOUSE()     : Bool return K.isDown    (K.MOUSE_LEFT);
-  public function isPressedMOUSE()  : Bool return K.isPressed (K.MOUSE_LEFT);
-  public function isReleasedMOUSE() : Bool return K.isReleased(K.MOUSE_LEFT);
-
-  public function tableMouse() : h3d.col.Point {
-    if (dirty) {
-      dirty = false;
-      tablePoint = camera
-        .rayFromScreen(mouseX(), mouseY())
-        .intersect(tablePlane);
+  function actionToKey(action : Action) : Int {
+    return switch action {
+      case CAMERA_UP:    keyCameraUp;
+      case CAMERA_DOWN:  keyCameraDown;
+      case CAMERA_LEFT:  keyCameraLeft;
+      case CAMERA_RIGHT: keyCameraRight;
+      case CAMERA_IN:    keyCameraIn;
+      case CAMERA_OUT:   keyCameraOut;
+      case INTERACT:     keyInteract;
     }
+  }
 
-    return tablePoint;
+  function actionToKeyAlt(action : Action) : Int {
+    return switch action {
+      case CAMERA_UP:    keyCameraUpAlt;
+      case CAMERA_DOWN:  keyCameraDownAlt;
+      case CAMERA_LEFT:  keyCameraLeftAlt;
+      case CAMERA_RIGHT: keyCameraRightAlt;
+      case CAMERA_IN:    keyCameraInAlt;
+      case CAMERA_OUT:   keyCameraOutAlt;
+      case INTERACT:     keyInteractAlt;
+    }
   }
 }
