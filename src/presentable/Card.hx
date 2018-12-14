@@ -91,7 +91,7 @@ class Card {
       case Left: card.moveBy(new h3d.col.Point(-gridX, 0, 0));
       case Right: card.moveBy(new h3d.col.Point(gridX, 0, 0));
     }
-    card.pushCard(direction);
+    card.pushAnotherCard(direction);
   }
 
   public function center() : h3d.col.Point {
