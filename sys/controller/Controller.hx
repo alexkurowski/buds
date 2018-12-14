@@ -11,7 +11,7 @@ class Controller {
     input = Game.input;
   }
 
+  public function init() {}
   public function update() {}
-
   public function destroy() {}
 }

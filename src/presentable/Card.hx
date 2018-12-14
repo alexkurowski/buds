@@ -78,20 +78,16 @@ class Card {
   }
 
   public function pushAnotherCard(direction : PushDirection) {
-    var controller : controller.Gameplay = cast Game.controller;
-
-    if (controller == null) return;
-
-    var presentation : presentation.Gameplay = controller.presentation;
+    var presentation : presentation.Gameplay = cast Game.presentation;
     var card = presentation.findAnotherCardAt(this);
 
-    if (card == null) return;
-
-    switch direction {
-      case Left: card.moveBy(new h3d.col.Point(-gridX, 0, 0));
-      case Right: card.moveBy(new h3d.col.Point(gridX, 0, 0));
+    if (card != null) {
+      switch direction {
+        case Left: card.moveBy(new h3d.col.Point(-gridX, 0, 0));
+        case Right: card.moveBy(new h3d.col.Point(gridX, 0, 0));
+      }
+      card.pushAnotherCard(direction);
     }
-    card.pushAnotherCard(direction);
   }
 
   public function center() : h3d.col.Point {

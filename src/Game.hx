@@ -3,15 +3,16 @@ enum GameState {
 }
 
 class Game extends hxd.App {
-  public static var state : GameState;
-  public static var input : Input;
-  public static var controller : controller.Controller;
-  public static var abstraction : abstraction.Abstraction;
+  static public var state : GameState;
+  static public var input : Input;
+  static public var abstraction : abstraction.Abstraction;
+  static public var presentation : presentation.Presentation;
+  static public var controller : controller.Controller;
 
-  public static var dt : Float;
+  static public var dt : Float;
   var step : Float = 1 / 60;
 
-  private static var game : Game;
+  static var game : Game;
 
   override function init() {
     input = new Input(s3d);
@@ -29,16 +30,20 @@ class Game extends hxd.App {
       controller.update();
     }
 
+    if (presentation != null) {
+      presentation.update();
+    }
+
     if (dt < step) {
       Sys.sleep(step - dt);
     }
   }
 
-  public static function main() {
+  static public function main() {
     game = new Game();
   }
 
-  public static function setState(newState : GameState) {
+  static public function setState(newState : GameState) {
     if (newState != state) {
       switch newState {
         case Gameplay:
@@ -50,12 +55,21 @@ class Game extends hxd.App {
   function changeStateTo(newState : GameState) {
     state = newState;
 
+    if (presentation != null) {
+      presentation.destroy();
+    }
+
     if (controller != null) {
       controller.destroy();
     }
 
-    controller = switch newState {
-      case Gameplay: new controller.Gameplay(s2d, s3d);
+    switch newState {
+      case Gameplay:
+        presentation = new presentation.Gameplay(s2d, s3d);
+        controller = new controller.Gameplay(s2d, s3d);
     }
+
+    presentation.init();
+    controller.init();
   }
 }

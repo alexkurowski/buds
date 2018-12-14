@@ -9,7 +9,7 @@ class Presentation {
     this.s3d = s3d;
   }
 
+  public function init() {}
   public function update() {}
-
   public function destroy() {}
 }

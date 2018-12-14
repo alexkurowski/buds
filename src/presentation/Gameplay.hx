@@ -13,9 +13,7 @@ class Gameplay extends Presentation {
   public var cards : Array<Card>;
   var fps : h2d.Text;
 
-  public function new(s2d, s3d) {
-    super(s2d, s3d);
-
+  override public function init() {
     setup3dCamera();
     setup3dLight();
     setup3dScene();
