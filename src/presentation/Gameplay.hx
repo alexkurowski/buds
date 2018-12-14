@@ -35,7 +35,11 @@ class Gameplay extends Presentation {
   function setup3dScene() {
     table = new Table(s3d);
     cards = [];
-    cards.push(new Card(s3d));
+    for (i in 0...20) {
+      for (j in 0...15) {
+        cards.push(new Card(s3d, new h3d.col.Point(i * Card.gridX, 0, j * Card.gridZ)));
+      }
+    }
   }
 
   override public function update() {

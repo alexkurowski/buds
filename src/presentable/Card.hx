@@ -8,11 +8,13 @@ class Card {
   static inline var sizeY : Float = 0.001;
   static inline var sizeZ : Float = 0.3;
   static inline var pad : Float = 0.05;
+  static public inline var gridX : Float = sizeX + pad * 2;
+  static public inline var gridZ : Float = sizeZ + pad * 2;
 
   public var width : Float = sizeX;
   public var height : Float = sizeZ;
 
-  public function new(s3d : h3d.scene.Scene) {
+  public function new(s3d : h3d.scene.Scene, ?initialPosition : h3d.col.Point) {
     var primitive = new h3d.prim.Cube();
     primitive.unindex();
     primitive.addNormals();
@@ -26,8 +28,14 @@ class Card {
     mesh.scaleY = sizeY;
     mesh.scaleZ = sizeZ;
 
-    position = new h3d.col.Point();
-    moveTo(position, true);
+    position =
+      if (initialPosition == null) {
+        new h3d.col.Point();
+      } else {
+        initialPosition;
+      }
+    putDown();
+    moveTo(position, true, true);
   }
 
   public function update() {
@@ -54,18 +62,22 @@ class Card {
   }
 
   public function putDown() {
-    var gridX = width + pad * 2;
-    var gridZ = height + pad * 2;
-
-    position.x = Math.round(position.x / gridX) * gridX;
+    snapToGrid();
     position.y = 0;
+  }
+
+  function snapToGrid() {
+    position.x = Math.round(position.x / gridX) * gridX;
     position.z = Math.round(position.z / gridZ) * gridZ;
   }
 
-  public function moveTo(point : h3d.col.Point, immediate : Bool = false) {
+  public function moveTo(point : h3d.col.Point, immediate : Bool = false, skipOffset : Bool = false) {
     position = new h3d.col.Point(point.x, position.y, point.z);
-    position.x -= width * 0.5;
-    position.z -= height * 0.5;
+
+    if (!skipOffset) {
+      position.x -= width * 0.5;
+      position.z -= height * 0.5;
+    }
 
     if (immediate) {
       mesh.x = position.x;
