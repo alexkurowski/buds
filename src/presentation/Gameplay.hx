@@ -3,8 +3,9 @@ package presentation;
 import presentable.*;
 
 class Gameplay extends Presentation {
-  var table : Table;
-  var cards : Array<Card>;
+  public var cameraTargetOffsetZ = -5;
+  public var table : Table;
+  public var cards : Array<Card>;
 
   public function new(s2d, s3d) {
     super(s2d, s3d);
@@ -15,7 +16,8 @@ class Gameplay extends Presentation {
   }
 
   function setup3dCamera() {
-    s3d.camera.pos.set(0, 15, -5);
+    s3d.camera.pos.set(0, 15, cameraTargetOffsetZ);
+    s3d.camera.fovY = 25;
   }
 
   function setup3dLight() {
@@ -28,6 +30,9 @@ class Gameplay extends Presentation {
     table = new Table(s3d);
     cards = [];
     cards.push(new Card(s3d));
+  }
+
+  override public function update() {
   }
 
   public function findCardAt(point : h3d.col.Point) : Card {

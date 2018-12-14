@@ -8,6 +8,8 @@ class Game extends hxd.App {
   public static var controller : controller.Controller;
   public static var abstraction : abstraction.Abstraction;
 
+  public static var dt : Float;
+
   private static var game : Game;
   // var time : Float = 0;
   // var fps : h2d.Text;
@@ -65,6 +67,8 @@ class Game extends hxd.App {
   }
 
   override function update(dt : Float) {
+    Game.dt = dt;
+
     input.update();
 
     // time += dt;

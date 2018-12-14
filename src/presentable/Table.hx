@@ -22,4 +22,7 @@ class Table {
     mesh.scaleY = sizeY;
     mesh.scaleZ = sizeZ;
   }
+
+  public function width() : Float return sizeX;
+  public function height() : Float return sizeZ;
 }

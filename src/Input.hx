@@ -1,5 +1,3 @@
-import hxd.Key in K;
-
 enum Action {
   CAMERA_UP;
   CAMERA_DOWN;
@@ -7,24 +5,23 @@ enum Action {
   CAMERA_RIGHT;
   CAMERA_IN;
   CAMERA_OUT;
-
   INTERACT;
 }
 
 class Input {
-  var keyCameraUp       : Int = K.UP;
-  var keyCameraUpAlt    : Int = K.W;
-  var keyCameraDown     : Int = K.DOWN;
-  var keyCameraDownAlt  : Int = K.S;
-  var keyCameraLeft     : Int = K.LEFT;
-  var keyCameraLeftAlt  : Int = K.A;
-  var keyCameraRight    : Int = K.RIGHT;
-  var keyCameraRightAlt : Int = K.D;
-  var keyCameraIn       : Int = K.MOUSE_WHEEL_DOWN;
+  var keyCameraUp       : Int = hxd.Key.UP;
+  var keyCameraUpAlt    : Int = hxd.Key.W;
+  var keyCameraDown     : Int = hxd.Key.DOWN;
+  var keyCameraDownAlt  : Int = hxd.Key.S;
+  var keyCameraLeft     : Int = hxd.Key.LEFT;
+  var keyCameraLeftAlt  : Int = hxd.Key.A;
+  var keyCameraRight    : Int = hxd.Key.RIGHT;
+  var keyCameraRightAlt : Int = hxd.Key.D;
+  var keyCameraIn       : Int = hxd.Key.MOUSE_WHEEL_DOWN;
   var keyCameraInAlt    : Int = 0;
-  var keyCameraOut      : Int = K.MOUSE_WHEEL_UP;
+  var keyCameraOut      : Int = hxd.Key.MOUSE_WHEEL_UP;
   var keyCameraOutAlt   : Int = 0;
-  var keyInteract       : Int = K.MOUSE_LEFT;
+  var keyInteract       : Int = hxd.Key.MOUSE_LEFT;
   var keyInteractAlt    : Int = 0;
 
   var window : hxd.Window;
@@ -50,18 +47,18 @@ class Input {
   }
 
   public function isDown(action : Action) : Bool {
-    return K.isDown(actionToKey(action)) ||
-           K.isDown(actionToKeyAlt(action));
+    return hxd.Key.isDown(actionToKey(action)) ||
+           hxd.Key.isDown(actionToKeyAlt(action));
   }
 
   public function isPressed(action : Action) : Bool {
-    return K.isPressed(actionToKey(action)) ||
-           K.isPressed(actionToKeyAlt(action));
+    return hxd.Key.isPressed(actionToKey(action)) ||
+           hxd.Key.isPressed(actionToKeyAlt(action));
   }
 
   public function isReleased(action : Action) : Bool {
-    return K.isReleased(actionToKey(action)) ||
-           K.isReleased(actionToKeyAlt(action));
+    return hxd.Key.isReleased(actionToKey(action)) ||
+           hxd.Key.isReleased(actionToKeyAlt(action));
   }
 
   function actionToKey(action : Action) : Int {
