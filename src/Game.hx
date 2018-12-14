@@ -18,7 +18,6 @@ class Game extends hxd.App {
 
   override function init() {
     input = new Input(s3d);
-
     abstraction = new Abstraction();
     setState(Gameplay);
   }
@@ -27,14 +26,8 @@ class Game extends hxd.App {
     Game.dt = dt;
 
     input.update();
-
-    if (controller != null) {
-      controller.update();
-    }
-
-    if (presentation != null) {
-      presentation.update();
-    }
+    controller.update();
+    presentation.update();
 
     if (dt < step) {
       Sys.sleep(step - dt);
