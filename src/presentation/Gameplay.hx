@@ -39,11 +39,14 @@ class Gameplay extends Presentation {
   }
 
   override public function update() {
+    for (card in cards) {
+      card.update();
+    }
   }
 
   public function findCardAt(point : h3d.col.Point) : Card {
     for (card in cards) {
-      if (card.pointInBound(point)) {
+      if (card.isInside(point)) {
         return card;
       }
     }

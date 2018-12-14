@@ -20,6 +20,7 @@ class Gameplay extends Controller {
   override public function update() {
     camera.update();
     cards.update();
+
     presentation.update();
   }
 }

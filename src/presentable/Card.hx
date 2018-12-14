@@ -7,6 +7,10 @@ class Card {
   static inline var sizeX : Float = 0.2;
   static inline var sizeY : Float = 0.001;
   static inline var sizeZ : Float = 0.3;
+  static inline var pad : Float = 0.05;
+
+  public var width : Float = sizeX;
+  public var height : Float = sizeZ;
 
   public function new(s3d : h3d.scene.Scene) {
     var primitive = new h3d.prim.Cube();
@@ -18,14 +22,27 @@ class Card {
     mesh.material.color.setColor(0xf0f0f0);
     mesh.material.receiveShadows = false;
 
-    position = new h3d.col.Point();
-    moveTo(position);
     mesh.scaleX = sizeX;
     mesh.scaleY = sizeY;
     mesh.scaleZ = sizeZ;
+
+    position = new h3d.col.Point();
+    moveTo(position, true);
   }
 
-  public function pointInBound(point : h3d.col.Point) : Bool {
+  public function update() {
+    move();
+  }
+
+  function move() {
+    var moveSpeed = 8;
+
+    mesh.x = M.ease(mesh.x, position.x, moveSpeed);
+    mesh.y = M.ease(mesh.y, position.y, moveSpeed);
+    mesh.z = M.ease(mesh.z, position.z, moveSpeed);
+  }
+
+  public function isInside(point : h3d.col.Point) : Bool {
     return point.x > mesh.x &&
            point.x < mesh.x + sizeX &&
            point.z > mesh.z &&
@@ -33,15 +50,21 @@ class Card {
   }
 
   public function pickUp() {
-    mesh.y = 0.25;
+    position.y = 0.25;
   }
 
   public function putDown() {
-    mesh.y = 0;
+    position.y = 0;
   }
 
-  public function moveTo(point : h3d.col.Point) {
-    mesh.x = point.x - sizeX * 0.5;
-    mesh.z = point.z - sizeZ * 0.5;
+  public function moveTo(point : h3d.col.Point, immediate : Bool = false) {
+    position = new h3d.col.Point(point.x, position.y, point.z);
+    position.x -= width * 0.5;
+    position.z -= height * 0.5;
+
+    if (immediate) {
+      mesh.x = position.x;
+      mesh.z = position.z;
+    }
   }
 }

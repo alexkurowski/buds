@@ -62,27 +62,16 @@ class Camera {
     var cameraMinFov : Float = presentation.cameraMinFov;
     var cameraMaxFov : Float = presentation.cameraMaxFov;
 
-    cameraTargetPosition.x = clamp(cameraTargetPosition.x, cameraMinX, cameraMaxX);
-    cameraTargetPosition.z = clamp(cameraTargetPosition.z, cameraMinZ, cameraMaxZ);
-    targetTargetPosition.x = clamp(targetTargetPosition.x, tableMinX, tableMaxX);
-    targetTargetPosition.z = clamp(targetTargetPosition.z, tableMinZ, tableMaxZ);
-    cameraTargetFov = clamp(cameraTargetFov, cameraMinFov, cameraMaxFov);
+    cameraTargetPosition.x = M.clamp(cameraTargetPosition.x, cameraMinX, cameraMaxX);
+    cameraTargetPosition.z = M.clamp(cameraTargetPosition.z, cameraMinZ, cameraMaxZ);
+    targetTargetPosition.x = M.clamp(targetTargetPosition.x, tableMinX, tableMaxX);
+    targetTargetPosition.z = M.clamp(targetTargetPosition.z, tableMinZ, tableMaxZ);
+    cameraTargetFov = M.clamp(cameraTargetFov, cameraMinFov, cameraMaxFov);
 
-    s3d.camera.pos.x += add(s3d.camera.pos.x, cameraTargetPosition.x, 2);
-    s3d.camera.pos.z += add(s3d.camera.pos.z, cameraTargetPosition.z, 2);
-    s3d.camera.target.x += add(s3d.camera.target.x, targetTargetPosition.x, 2.2);
-    s3d.camera.target.z += add(s3d.camera.target.z, targetTargetPosition.z, 2.2);
-    s3d.camera.fovY += add(s3d.camera.fovY, cameraTargetFov, 3);
-  }
-
-  function add(current : Float, target : Float, offset : Float = 1) : Float {
-    // TODO: Replace with slerp
-    return (target - current) * offset * Game.dt;
-  }
-
-  function clamp(val : Float, min : Float, max : Float) : Float {
-    if (val < min) return min;
-    if (val > max) return max;
-    return val;
+    s3d.camera.pos.x = M.ease(s3d.camera.pos.x, cameraTargetPosition.x, 2);
+    s3d.camera.pos.z = M.ease(s3d.camera.pos.z, cameraTargetPosition.z, 2);
+    s3d.camera.target.x = M.ease(s3d.camera.target.x, targetTargetPosition.x, 2.2);
+    s3d.camera.target.z = M.ease(s3d.camera.target.z, targetTargetPosition.z, 2.2);
+    s3d.camera.fovY = M.ease(s3d.camera.fovY, cameraTargetFov, 3);
   }
 }
