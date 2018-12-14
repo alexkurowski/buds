@@ -51,24 +51,28 @@ class Gameplay extends Controller {
   }
 
   function updateCamera() {
-    var tableMinX : Float = -presentation.table.width() * 0.5;
-    var tableMaxX : Float =  presentation.table.width() * 0.5;
-    var tableMinZ : Float = -presentation.table.height() * 0.5;
-    var tableMaxZ : Float =  presentation.table.height() * 0.5;
-    var cameraMinFov : Float = 5;
-    var cameraMaxFov : Float = 35;
+    var cameraMinX : Float = -presentation.table.width * 0.5;
+    var cameraMaxX : Float =  presentation.table.width * 0.5;
+    var cameraMinZ : Float = -presentation.table.height * 0.5 + presentation.cameraTargetOffset;
+    var cameraMaxZ : Float =  presentation.table.height * 0.5 + presentation.cameraTargetOffset;
+    var tableMinX : Float = -presentation.table.width * 0.5;
+    var tableMaxX : Float =  presentation.table.width * 0.5;
+    var tableMinZ : Float = -presentation.table.height * 0.5;
+    var tableMaxZ : Float =  presentation.table.height * 0.5;
+    var cameraMinFov : Float = presentation.cameraMinFov;
+    var cameraMaxFov : Float = presentation.cameraMaxFov;
 
-    cameraTargetPosition.x = clamp(cameraTargetPosition.x, tableMinX, tableMaxX);
-    cameraTargetPosition.z = clamp(cameraTargetPosition.z, tableMinZ + presentation.cameraTargetOffsetZ, tableMaxZ + presentation.cameraTargetOffsetZ);
+    cameraTargetPosition.x = clamp(cameraTargetPosition.x, cameraMinX, cameraMaxX);
+    cameraTargetPosition.z = clamp(cameraTargetPosition.z, cameraMinZ, cameraMaxZ);
     targetTargetPosition.x = clamp(targetTargetPosition.x, tableMinX, tableMaxX);
     targetTargetPosition.z = clamp(targetTargetPosition.z, tableMinZ, tableMaxZ);
     cameraTargetFov = clamp(cameraTargetFov, cameraMinFov, cameraMaxFov);
 
-    s3d.camera.pos.x += (cameraTargetPosition.x - s3d.camera.pos.x) * Game.dt;
-    s3d.camera.pos.z += (cameraTargetPosition.z - s3d.camera.pos.z) * Game.dt;
-    s3d.camera.target.x += (targetTargetPosition.x - s3d.camera.target.x) * 1.1 * Game.dt;
-    s3d.camera.target.z += (targetTargetPosition.z - s3d.camera.target.z) * 1.1 * Game.dt;
-    s3d.camera.fovY += (cameraTargetFov - s3d.camera.fovY) * 3 * Game.dt;
+    s3d.camera.pos.x += add(s3d.camera.pos.x, cameraTargetPosition.x, 2);
+    s3d.camera.pos.z += add(s3d.camera.pos.z, cameraTargetPosition.z, 2);
+    s3d.camera.target.x += add(s3d.camera.target.x, targetTargetPosition.x, 2.2);
+    s3d.camera.target.z += add(s3d.camera.target.z, targetTargetPosition.z, 2.2);
+    s3d.camera.fovY += add(s3d.camera.fovY, cameraTargetFov, 3);
   }
 
   function cardPickup() {
@@ -88,6 +92,11 @@ class Gameplay extends Controller {
         pickedCard = null;
       }
     }
+  }
+
+  function add(current : Float, target : Float, offset : Float = 1) : Float {
+    // TODO: Replace with slerp
+    return (target - current) * offset * Game.dt;
   }
 
   function clamp(val : Float, min : Float, max : Float) : Float {

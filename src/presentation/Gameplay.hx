@@ -3,7 +3,12 @@ package presentation;
 import presentable.*;
 
 class Gameplay extends Presentation {
-  public var cameraTargetOffsetZ = -5;
+  public var cameraHeight : Float = 15;
+  public var cameraTargetOffset : Float = -5;
+  public var cameraDefaultFov : Float = 25;
+  public var cameraMinFov : Float = 4;
+  public var cameraMaxFov : Float = 35;
+
   public var table : Table;
   public var cards : Array<Card>;
 
@@ -16,8 +21,9 @@ class Gameplay extends Presentation {
   }
 
   function setup3dCamera() {
-    s3d.camera.pos.set(0, 15, cameraTargetOffsetZ);
-    s3d.camera.fovY = 25;
+    s3d.camera.pos.set(0, cameraHeight, cameraTargetOffset);
+    s3d.camera.target.set(0, 0, 0);
+    s3d.camera.fovY = cameraDefaultFov;
   }
 
   function setup3dLight() {

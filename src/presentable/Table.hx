@@ -7,6 +7,9 @@ class Table {
   static inline var sizeY : Float = 1;
   static inline var sizeZ : Float = 6;
 
+  public var width : Float = sizeX;
+  public var height : Float = sizeZ;
+
   public function new(s3d : h3d.scene.Scene) {
     var primitive = new h3d.prim.Cube();
     primitive.unindex();
@@ -22,7 +25,4 @@ class Table {
     mesh.scaleY = sizeY;
     mesh.scaleZ = sizeZ;
   }
-
-  public function width() : Float return sizeX;
-  public function height() : Float return sizeZ;
 }
