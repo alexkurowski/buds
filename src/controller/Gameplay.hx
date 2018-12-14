@@ -41,10 +41,4 @@ class Gameplay extends Controller {
       }
     }
   }
-
-  function clamp(val : Float, min : Float, max : Float) : Float {
-    if (val < min) return min;
-    if (val > max) return max;
-    return val;
-  }
 }

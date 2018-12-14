@@ -18,7 +18,7 @@ class Table {
 
     mesh = new h3d.scene.Mesh(primitive, s3d);
     mesh.material.color.setColor(0x5b576d);
-    mesh.material.shadows = false;
+    mesh.material.castShadows = false;
 
     mesh.setPosition(-sizeX * 0.5, -sizeY - 0.01, -sizeZ * 0.5);
     mesh.scaleX = sizeX;

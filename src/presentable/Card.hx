@@ -16,7 +16,7 @@ class Card {
 
     mesh = new h3d.scene.Mesh(primitive, s3d);
     mesh.material.color.setColor(0xf0f0f0);
-    mesh.material.shadows = true;
+    mesh.material.receiveShadows = false;
 
     position = new h3d.col.Point();
     moveTo(position);
@@ -33,7 +33,7 @@ class Card {
   }
 
   public function pickUp() {
-    mesh.y = 0.25;
+    mesh.y = 0.5;
   }
 
   public function putDown() {
