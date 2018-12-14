@@ -9,6 +9,7 @@ class Game extends hxd.App {
   public static var abstraction : abstraction.Abstraction;
 
   public static var dt : Float;
+  var step : Float = 1 / 60;
 
   private static var game : Game;
 
@@ -28,7 +29,9 @@ class Game extends hxd.App {
       controller.update();
     }
 
-    Sys.sleep(1/60 - dt);
+    if (dt < step) {
+      Sys.sleep(step - dt);
+    }
   }
 
   public static function main() {

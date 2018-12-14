@@ -11,6 +11,7 @@ class Gameplay extends Presentation {
 
   public var table : Table;
   public var cards : Array<Card>;
+  var fps : h2d.Text;
 
   public function new(s2d, s3d) {
     super(s2d, s3d);
@@ -18,6 +19,7 @@ class Gameplay extends Presentation {
     setup3dCamera();
     setup3dLight();
     setup3dScene();
+    setup2dFps();
   }
 
   function setup3dCamera() {
@@ -42,10 +44,17 @@ class Gameplay extends Presentation {
     }
   }
 
+  function setup2dFps() {
+    fps = new h2d.Text(hxd.res.DefaultFont.get(), s2d);
+    fps.textColor = 0xffeedd;
+  }
+
   override public function update() {
     for (card in cards) {
       card.update();
     }
+
+    fps.text = Std.string(hxd.Timer.fps());
   }
 
   public function findCardAt(point : h3d.col.Point) : Card {
