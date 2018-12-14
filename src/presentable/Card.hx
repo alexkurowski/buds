@@ -9,12 +9,12 @@ class Card {
   var mesh : h3d.scene.Mesh;
   var position : h3d.col.Point;
 
-  static inline var sizeX : Float = 0.2;
-  static inline var sizeY : Float = 0.001;
-  static inline var sizeZ : Float = 0.3;
-  static inline var pad : Float = 0.05;
-  static public inline var gridX : Float = sizeX + pad * 2;
-  static public inline var gridZ : Float = sizeZ + pad * 2;
+  inline static var sizeX : Float = 0.2;
+  inline static var sizeY : Float = 0.001;
+  inline static var sizeZ : Float = 0.3;
+  inline static var pad : Float = 0.05;
+  public static inline var gridX : Float = sizeX + pad * 2;
+  public static inline var gridZ : Float = sizeZ + pad * 2;
 
   public var width : Float = sizeX;
   public var height : Float = sizeZ;

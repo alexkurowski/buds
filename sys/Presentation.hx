@@ -1,5 +1,3 @@
-package presentation;
-
 class Presentation {
   var s2d : h2d.Scene;
   var s3d : h3d.scene.Scene;

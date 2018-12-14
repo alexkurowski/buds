@@ -1,15 +1,17 @@
+import abstraction.Abstraction;
+
 enum GameState {
   Gameplay;
 }
 
 class Game extends hxd.App {
-  static public var state : GameState;
-  static public var input : Input;
-  static public var abstraction : abstraction.Abstraction;
-  static public var presentation : presentation.Presentation;
-  static public var controller : controller.Controller;
+  public static var state : GameState;
+  public static var input : Input;
+  public static var abstraction : Abstraction;
+  public static var presentation : Presentation;
+  public static var controller : Controller;
 
-  static public var dt : Float;
+  public static var dt : Float;
   var step : Float = 1 / 60;
 
   static var game : Game;
@@ -17,7 +19,7 @@ class Game extends hxd.App {
   override function init() {
     input = new Input(s3d);
 
-    abstraction = new abstraction.Abstraction();
+    abstraction = new Abstraction();
     setState(Gameplay);
   }
 
@@ -39,11 +41,11 @@ class Game extends hxd.App {
     }
   }
 
-  static public function main() {
+  public static function main() {
     game = new Game();
   }
 
-  static public function setState(newState : GameState) {
+  public static function setState(newState : GameState) {
     if (newState != state) {
       switch newState {
         case Gameplay:
