@@ -51,6 +51,10 @@ class Input {
            hxd.Key.isDown(actionToKeyAlt(action));
   }
 
+  public function isUp(action : Action) : Bool {
+    return !isDown(action);
+  }
+
   public function isPressed(action : Action) : Bool {
     return hxd.Key.isPressed(actionToKey(action)) ||
            hxd.Key.isPressed(actionToKeyAlt(action));

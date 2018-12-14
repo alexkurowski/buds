@@ -33,7 +33,7 @@ class Card {
   }
 
   public function pickUp() {
-    mesh.y = 0.5;
+    mesh.y = 0.25;
   }
 
   public function putDown() {
@@ -41,7 +41,6 @@ class Card {
   }
 
   public function moveTo(point : h3d.col.Point) {
-    trace(point);
     mesh.x = point.x - sizeX * 0.5;
     mesh.z = point.z - sizeZ * 0.5;
   }
