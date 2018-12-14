@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-haxe game.hxml -hl out/main.c
+haxe project.hxml -hl out/main.c
 echo "Compiling..."
 gcc -O3 -o game -I out out/main.c -Lhl /usr/local/lib/*.hdll /usr/local/lib/libhl.dylib
