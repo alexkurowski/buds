@@ -50,11 +50,16 @@ class Card {
   }
 
   public function pickUp() {
-    position.y = 0.25;
+    position.y = 0.1;
   }
 
   public function putDown() {
+    var gridX = width + pad * 2;
+    var gridZ = height + pad * 2;
+
+    position.x = Math.round(position.x / gridX) * gridX;
     position.y = 0;
+    position.z = Math.round(position.z / gridZ) * gridZ;
   }
 
   public function moveTo(point : h3d.col.Point, immediate : Bool = false) {
