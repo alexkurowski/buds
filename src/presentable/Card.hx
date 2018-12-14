@@ -1,5 +1,10 @@
 package presentable;
 
+enum PushDirection {
+  Left;
+  Right;
+}
+
 class Card {
   var mesh : h3d.scene.Mesh;
   var position : h3d.col.Point;
@@ -51,10 +56,10 @@ class Card {
   }
 
   public function isInside(point : h3d.col.Point) : Bool {
-    return point.x > mesh.x &&
-           point.x < mesh.x + sizeX &&
-           point.z > mesh.z &&
-           point.z < mesh.z + sizeZ;
+    return point.x > position.x &&
+           point.x < position.x + width &&
+           point.z > position.z &&
+           point.z < position.z + height;
   }
 
   public function pickUp() {
@@ -64,11 +69,33 @@ class Card {
   public function putDown() {
     snapToGrid();
     position.y = 0;
+    pushAnotherCard(Right);
   }
 
   function snapToGrid() {
     position.x = Math.round(position.x / gridX) * gridX;
     position.z = Math.round(position.z / gridZ) * gridZ;
+  }
+
+  public function pushAnotherCard(direction : PushDirection) {
+    var controller : controller.Gameplay = cast Game.controller;
+
+    if (controller == null) return;
+
+    var presentation : presentation.Gameplay = controller.presentation;
+    var card = presentation.findAnotherCardAt(this);
+
+    if (card == null) return;
+
+    switch direction {
+      case Left: card.moveBy(new h3d.col.Point(-gridX, 0, 0));
+      case Right: card.moveBy(new h3d.col.Point(gridX, 0, 0));
+    }
+    card.pushCard(direction);
+  }
+
+  public function center() : h3d.col.Point {
+    return new h3d.col.Point(position.x + width * 0.5, position.y, position.z + height * 0.5);
   }
 
   public function moveTo(point : h3d.col.Point, immediate : Bool = false, skipOffset : Bool = false) {
@@ -83,5 +110,11 @@ class Card {
       mesh.x = position.x;
       mesh.z = position.z;
     }
+  }
+
+  public function moveBy(point : h3d.col.Point) {
+    position.x += point.x;
+    position.y += point.y;
+    position.z += point.z;
   }
 }

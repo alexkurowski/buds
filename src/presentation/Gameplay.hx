@@ -5,7 +5,7 @@ import presentable.*;
 class Gameplay extends Presentation {
   public var cameraHeight : Float = 15;
   public var cameraTargetOffset : Float = -5;
-  public var cameraDefaultFov : Float = 25;
+  public var cameraDefaultFov : Float = 15;
   public var cameraMinFov : Float = 4;
   public var cameraMaxFov : Float = 35;
 
@@ -52,6 +52,18 @@ class Gameplay extends Presentation {
     for (card in cards) {
       if (card.isInside(point)) {
         return card;
+      }
+    }
+
+    return null;
+  }
+
+  public function findAnotherCardAt(oneCard : Card) : Card {
+    for (card in cards) {
+      if (card != oneCard) {
+        if (card.isInside(oneCard.center())) {
+          return card;
+        }
       }
     }
 

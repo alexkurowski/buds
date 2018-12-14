@@ -3,7 +3,7 @@ package controller;
 import concern.*;
 
 class Gameplay extends Controller {
-  var presentation : presentation.Gameplay;
+  public var presentation : presentation.Gameplay;
 
   var camera : Camera;
   var cards : Cards;
