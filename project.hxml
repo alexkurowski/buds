@@ -3,5 +3,5 @@
 -cp sys
 -cp src
 -main Game
--D windowSize=800x600
 -D resourcePath="res"
+-D windowSize=800x600

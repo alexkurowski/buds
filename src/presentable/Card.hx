@@ -25,33 +25,13 @@ class Card {
     primitive.addNormals();
     primitive.addUVs();
 
-    var tex = new h3d.mat.Texture(64, 64, [Target]);
-
-    var g = new h2d.Graphics();
-    g.beginFill(0xffddbb);
-    g.drawRect(10, 10, 64 - 20, 64 - 20);
-    g.endFill();
-
-    var t = new h2d.Text(hxd.res.DefaultFont.get(), g);
-    t.textColor = 0xFF0000;
-    t.text = "AYY 123 LMAO FFFFUUUU";
-    // t.x = 100;
-    // t.y = 100;
-
-    g.drawTo(tex);
-
-    var mat = h3d.mat.Material.create(tex);
-    tex = null;
-
-    mesh = new h3d.scene.Mesh(primitive, mat, s3d);
+    mesh = new h3d.scene.Mesh(primitive, s3d);
     mesh.material.color.setColor(0xf0f0f0);
     mesh.material.receiveShadows = false;
 
     mesh.scaleX = sizeX;
     mesh.scaleY = sizeY;
     mesh.scaleZ = sizeZ;
-
-    // mesh.material.texture =
 
     position =
       if (initialPosition == null) {
