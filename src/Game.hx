@@ -16,6 +16,11 @@ class Game extends hxd.App {
 
   static var game : Game;
 
+  override function loadAssets(onLoaded) {
+    Assets.init();
+    onLoaded();
+  }
+
   override function init() {
     input = new Input(s3d);
     abstraction = new Abstraction();

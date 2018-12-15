@@ -18,6 +18,8 @@ class Card {
 
   public var width : Float = sizeX;
   public var height : Float = sizeZ;
+  var texWidth : Int = 200;
+  var texHeight : Int = 300;
 
   public function new(s3d : h3d.scene.Scene, ?initialPosition : h3d.col.Point) {
     var primitive = new h3d.prim.Cube();
@@ -25,8 +27,25 @@ class Card {
     primitive.addNormals();
     primitive.addUVs();
 
-    mesh = new h3d.scene.Mesh(primitive, s3d);
-    mesh.material.color.setColor(0xf0f0f0);
+    var texture = new h3d.mat.Texture(texWidth, texHeight, [Target]);
+
+    var graphics = new h2d.Graphics();
+    graphics.beginFill(0xeeeeee);
+    graphics.drawRect(0, 0, texWidth, texHeight);
+    graphics.endFill();
+    graphics.drawTo(texture);
+
+    var textScale = 0.7;
+    var text = Assets.cardText;
+    text.setScale(textScale);
+    text.textColor = 0x101010;
+    text.textAlign = Center;
+    text.maxWidth = texWidth / textScale;
+    text.text = "Test";
+    text.drawTo(texture);
+
+    var material = h3d.mat.Material.create(texture);
+    mesh = new h3d.scene.Mesh(primitive, material, s3d);
     mesh.material.receiveShadows = false;
 
     mesh.scaleX = sizeX;
