@@ -35,6 +35,7 @@ class Game extends hxd.App {
   }
 
   public static function main() {
+    hxd.Res.initEmbed();
     game = new Game();
   }
 
