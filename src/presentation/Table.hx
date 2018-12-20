@@ -1,4 +1,4 @@
-package presentable;
+package presentation;
 
 class Table {
   var mesh : h3d.scene.Mesh;
@@ -10,13 +10,13 @@ class Table {
   public var width : Float = sizeX;
   public var height : Float = sizeZ;
 
-  public function new(s3d : h3d.scene.Scene) {
+  public function new() {
     var primitive = new h3d.prim.Cube();
     primitive.unindex();
     primitive.addNormals();
     primitive.addUVs();
 
-    mesh = new h3d.scene.Mesh(primitive, s3d);
+    mesh = new h3d.scene.Mesh(primitive, Game.s3d);
     mesh.material.color.setColor(0x5b576d);
     mesh.material.castShadows = false;
 

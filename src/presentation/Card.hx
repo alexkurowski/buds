@@ -1,4 +1,4 @@
-package presentable;
+package presentation;
 
 enum PushDirection {
   Left;
@@ -21,7 +21,7 @@ class Card {
   var texWidth : Int = 200;
   var texHeight : Int = 300;
 
-  public function new(s3d : h3d.scene.Scene, ?initialPosition : h3d.col.Point) {
+  public function new(?initialPosition : h3d.col.Point) {
     var primitive = new h3d.prim.Cube();
     primitive.unindex();
     primitive.addNormals();
@@ -29,11 +29,16 @@ class Card {
 
     var texture = new h3d.mat.Texture(texWidth, texHeight, [Target]);
 
-    var graphics = new h2d.Graphics();
-    graphics.beginFill(0xeeeeee);
+    var graphics = Assets.cardBackground;
+    if (hxd.Math.random() < 0.7) {
+      graphics.beginFill(0xeeeeee);
+    } else {
+      graphics.beginFill(0x4466ee);
+    }
     graphics.drawRect(0, 0, texWidth, texHeight);
     graphics.endFill();
     graphics.drawTo(texture);
+    graphics.clear();
 
     var textScale = 0.7;
     var text = Assets.cardText;
@@ -45,7 +50,7 @@ class Card {
     text.drawTo(texture);
 
     var material = h3d.mat.Material.create(texture);
-    mesh = new h3d.scene.Mesh(primitive, material, s3d);
+    mesh = new h3d.scene.Mesh(primitive, material, Game.s3d);
     mesh.material.receiveShadows = false;
 
     mesh.scaleX = sizeX;
@@ -74,11 +79,18 @@ class Card {
     mesh.z = M.ease(mesh.z, position.z, moveSpeed);
   }
 
-  public function isInside(point : h3d.col.Point) : Bool {
-    return point.x > position.x &&
-           point.x < position.x + width &&
-           point.z > position.z &&
-           point.z < position.z + height;
+  public function isInside(point : h3d.col.Point, includePad : Bool) : Bool {
+    return if (includePad) {
+      point.x > position.x - pad &&
+      point.x < position.x + width + pad &&
+      point.z > position.z - pad &&
+      point.z < position.z + height + pad;
+    } else {
+      point.x > position.x &&
+      point.x < position.x + width &&
+      point.z > position.z &&
+      point.z < position.z + height;
+    }
   }
 
   public function pickUp() {
@@ -97,8 +109,7 @@ class Card {
   }
 
   public function pushAnotherCard(direction : PushDirection) {
-    var presentation : presentation.Gameplay = cast Game.presentation;
-    var card = presentation.findAnotherCardAt(this);
+    var card = Presentation.findAnotherCardAt(this);
 
     if (card != null) {
       switch direction {

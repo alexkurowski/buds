@@ -9,63 +9,63 @@ enum Action {
 }
 
 class Input {
-  var keyCameraUp       : Int = hxd.Key.UP;
-  var keyCameraUpAlt    : Int = hxd.Key.W;
-  var keyCameraDown     : Int = hxd.Key.DOWN;
-  var keyCameraDownAlt  : Int = hxd.Key.S;
-  var keyCameraLeft     : Int = hxd.Key.LEFT;
-  var keyCameraLeftAlt  : Int = hxd.Key.A;
-  var keyCameraRight    : Int = hxd.Key.RIGHT;
-  var keyCameraRightAlt : Int = hxd.Key.D;
-  var keyCameraIn       : Int = hxd.Key.MOUSE_WHEEL_DOWN;
-  var keyCameraInAlt    : Int = 0;
-  var keyCameraOut      : Int = hxd.Key.MOUSE_WHEEL_UP;
-  var keyCameraOutAlt   : Int = 0;
-  var keyInteract       : Int = hxd.Key.MOUSE_LEFT;
-  var keyInteractAlt    : Int = 0;
+  static public var mousePoint(default, null) : h2d.col.Point;
+  static public var tablePoint(default, null) : h3d.col.Point;
 
-  var window : hxd.Window;
-  var camera : h3d.Camera;
-  var tablePlane : h3d.col.Plane;
+  static var keyCameraUp       : Int = hxd.Key.UP;
+  static var keyCameraUpAlt    : Int = hxd.Key.W;
+  static var keyCameraDown     : Int = hxd.Key.DOWN;
+  static var keyCameraDownAlt  : Int = hxd.Key.S;
+  static var keyCameraLeft     : Int = hxd.Key.LEFT;
+  static var keyCameraLeftAlt  : Int = hxd.Key.A;
+  static var keyCameraRight    : Int = hxd.Key.RIGHT;
+  static var keyCameraRightAlt : Int = hxd.Key.D;
+  static var keyCameraIn       : Int = hxd.Key.MOUSE_WHEEL_DOWN;
+  static var keyCameraInAlt    : Int = 0;
+  static var keyCameraOut      : Int = hxd.Key.MOUSE_WHEEL_UP;
+  static var keyCameraOutAlt   : Int = 0;
+  static var keyInteract       : Int = hxd.Key.MOUSE_LEFT;
+  static var keyInteractAlt    : Int = 0;
 
-  public var mousePoint(default, null) : h2d.col.Point;
-  public var tablePoint(default, null) : h3d.col.Point;
+  static var window : hxd.Window;
+  static var camera : h3d.Camera;
+  static var tablePlane : h3d.col.Plane;
 
-  public function new(s3d) {
+  static public function init() {
     hxd.Key.ALLOW_KEY_REPEAT = false;
 
     window = hxd.Window.getInstance();
-    camera = s3d.camera;
+    camera = Game.s3d.camera;
     tablePlane = new h3d.col.Plane(0, 1, 0, 0);
   }
 
-  public function update() {
+  static public function update() {
     mousePoint = new h2d.col.Point(window.mouseX, window.mouseY);
     tablePoint = camera
       .rayFromScreen(mousePoint.x, mousePoint.y)
       .intersect(tablePlane);
   }
 
-  public function isDown(action : Action) : Bool {
+  static public function isDown(action : Action) : Bool {
     return hxd.Key.isDown(actionToKey(action)) ||
            hxd.Key.isDown(actionToKeyAlt(action));
   }
 
-  public function isUp(action : Action) : Bool {
+  static public function isUp(action : Action) : Bool {
     return !isDown(action);
   }
 
-  public function isPressed(action : Action) : Bool {
+  static public function isPressed(action : Action) : Bool {
     return hxd.Key.isPressed(actionToKey(action)) ||
            hxd.Key.isPressed(actionToKeyAlt(action));
   }
 
-  public function isReleased(action : Action) : Bool {
+  static public function isReleased(action : Action) : Bool {
     return hxd.Key.isReleased(actionToKey(action)) ||
            hxd.Key.isReleased(actionToKeyAlt(action));
   }
 
-  function actionToKey(action : Action) : Int {
+  static function actionToKey(action : Action) : Int {
     return switch action {
       case CAMERA_UP:    keyCameraUp;
       case CAMERA_DOWN:  keyCameraDown;
@@ -77,7 +77,7 @@ class Input {
     }
   }
 
-  function actionToKeyAlt(action : Action) : Int {
+  static function actionToKeyAlt(action : Action) : Int {
     return switch action {
       case CAMERA_UP:    keyCameraUpAlt;
       case CAMERA_DOWN:  keyCameraDownAlt;

@@ -2,6 +2,6 @@
 -lib hlsdl
 -cp sys
 -cp src
--main Game
+-main Main
 -D resourcePath="res"
 -D windowSize=800x600
