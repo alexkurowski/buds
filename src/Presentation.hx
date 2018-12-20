@@ -2,7 +2,7 @@ import presentation.*;
 
 class Presentation {
   static public var table : Table;
-  static public var cards : Array<Card>;
+  static var cards : Array<Card>;
 
   static var fps : h2d.Text;
 

@@ -1,82 +1,84 @@
 package controller;
 
 class Camera {
-  static var cameraAngle : Float = 0;
-  static var cameraFov : Float = 20;
+  static var camera : h3d.Camera;
 
-  static var cameraInitialY : Float = 15;
-  static var cameraMinY : Float = 4;
-  static var cameraMaxY : Float = 35;
-  static var cameraTargetOffsetZ : Float = -5;
-  static var cameraInitialFov : Float = 20;
+  static var angle : Float = 75;
+  static var fov : Float = 20;
 
-  static var cameraTargetPosition : h3d.Vector;
-  static var targetTargetPosition : h3d.Vector;
+  static inline var panSpeed : Float = 4;
+  static inline var zoomSpeed : Float = 50;
+
+  static var distance : Float = 20;
+  static var distanceTarget : Float = distance;
+  static var distanceMin : Float = 5;
+  static var distanceMax : Float = 25;
+
+  static var targetPosition : h3d.Vector;
 
   static public function init() {
-    setupPosition();
-  }
+    camera = Game.s3d.camera;
 
-  static function setupPosition() {
-    Game.s3d.camera.pos.set(0, cameraInitialY, cameraTargetOffsetZ);
-    Game.s3d.camera.target.set(0, 0, 0);
-    Game.s3d.camera.fovY = cameraInitialFov;
+    targetPosition = new h3d.Vector(0, 0, 0);
 
-    cameraTargetPosition = Game.s3d.camera.pos.clone();
-    targetTargetPosition = Game.s3d.camera.target.clone();
+    camera.target.load(targetPosition);
+    updateCamera();
+
+    camera.fovY = fov;
   }
 
   static public function update() {
     readInput();
-    updatePosition();
+    clampTarget();
+    updateTarget();
+    updateCamera();
   }
 
   static function readInput() {
     var dx : Float = 0;
     var dy : Float = 0;
     var dz : Float = 0;
-    var panSpeed : Float = 4;
-    var zoomSpeed : Float = 50;
 
     if (Input.isDown(CAMERA_UP))    dz += panSpeed * Game.dt;
     if (Input.isDown(CAMERA_DOWN))  dz -= panSpeed * Game.dt;
     if (Input.isDown(CAMERA_LEFT))  dx -= panSpeed * Game.dt;
     if (Input.isDown(CAMERA_RIGHT)) dx += panSpeed * Game.dt;
 
+    targetPosition.x += dx;
+    targetPosition.z += dz;
+
     if (Input.isPressed(CAMERA_IN))  dy += zoomSpeed * Game.dt;
     if (Input.isPressed(CAMERA_OUT)) dy -= zoomSpeed * Game.dt;
 
-    if (dx != 0 || dy != 0 || dz != 0) {
-      cameraTargetPosition.x += dx;
-      cameraTargetPosition.y += dy;
-      cameraTargetPosition.z += dz;
-      targetTargetPosition.x += dx;
-      targetTargetPosition.z += dz;
-    }
+    distanceTarget += dy;
   }
 
-  static function updatePosition() {
-    var cameraMinX : Float = -Presentation.table.width * 0.5;
-    var cameraMaxX : Float =  Presentation.table.width * 0.5;
-    var cameraMinY : Float =  cameraMinY;
-    var cameraMaxY : Float =  cameraMaxY;
-    var cameraMinZ : Float = -Presentation.table.height * 0.5 + cameraTargetOffsetZ;
-    var cameraMaxZ : Float =  Presentation.table.height * 0.5 + cameraTargetOffsetZ;
+  static function clampTarget() {
     var tableMinX : Float = -Presentation.table.width * 0.5;
     var tableMaxX : Float =  Presentation.table.width * 0.5;
     var tableMinZ : Float = -Presentation.table.height * 0.5;
     var tableMaxZ : Float =  Presentation.table.height * 0.5;
 
-    cameraTargetPosition.x = M.clamp(cameraTargetPosition.x, cameraMinX, cameraMaxX);
-    cameraTargetPosition.y = M.clamp(cameraTargetPosition.y, cameraMinY, cameraMaxY);
-    cameraTargetPosition.z = M.clamp(cameraTargetPosition.z, cameraMinZ, cameraMaxZ);
-    targetTargetPosition.x = M.clamp(targetTargetPosition.x, tableMinX, tableMaxX);
-    targetTargetPosition.z = M.clamp(targetTargetPosition.z, tableMinZ, tableMaxZ);
+    targetPosition.x = M.clamp(targetPosition.x, tableMinX, tableMaxX);
+    targetPosition.z = M.clamp(targetPosition.z, tableMinZ, tableMaxZ);
 
-    Game.s3d.camera.pos.x = M.ease(Game.s3d.camera.pos.x, cameraTargetPosition.x, 2);
-    Game.s3d.camera.pos.y = M.ease(Game.s3d.camera.pos.y, cameraTargetPosition.y, 2);
-    Game.s3d.camera.pos.z = M.ease(Game.s3d.camera.pos.z, cameraTargetPosition.z, 2);
-    Game.s3d.camera.target.x = M.ease(Game.s3d.camera.target.x, targetTargetPosition.x, 2.2);
-    Game.s3d.camera.target.z = M.ease(Game.s3d.camera.target.z, targetTargetPosition.z, 2.2);
+    distanceTarget = M.clamp(distanceTarget, distanceMin, distanceMax);
+  }
+
+  static function updateTarget() {
+    camera.target.x = M.ease(camera.target.x, targetPosition.x, 2.2);
+    camera.target.z = M.ease(camera.target.z, targetPosition.z, 2.2);
+
+    distance = M.ease(distance, distanceTarget, 4);
+  }
+
+  static function updateCamera() {
+    var rad = angle / 180 * Math.PI;
+
+    camera.pos.set(
+      camera.target.x,
+      camera.target.y + Math.sin(rad) * distance,
+      camera.target.z - Math.cos(rad) * distance
+    );
   }
 }
