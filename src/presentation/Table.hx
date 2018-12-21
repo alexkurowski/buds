@@ -1,16 +1,16 @@
 package presentation;
 
 class Table {
-  var mesh : h3d.scene.Mesh;
-
   static inline var sizeX : Float = 10;
   static inline var sizeY : Float = 1;
   static inline var sizeZ : Float = 6;
 
-  public var width : Float = sizeX;
-  public var height : Float = sizeZ;
+  static public inline var width : Float = sizeX;
+  static public inline var height : Float = sizeZ;
 
-  public function new() {
+  static var mesh : h3d.scene.Mesh;
+
+  static public function init() {
     var primitive = new h3d.prim.Cube();
     primitive.unindex();
     primitive.addNormals();

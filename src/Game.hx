@@ -13,7 +13,6 @@ class Game {
 
     Input.init();
     Abstraction.init();
-    Controller.init();
     Presentation.init();
   }
 
@@ -21,7 +20,6 @@ class Game {
     dt = delta;
 
     Input.update();
-    Controller.update();
     Presentation.update();
 
     if (dt < step) {

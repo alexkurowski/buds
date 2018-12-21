@@ -6,20 +6,21 @@ enum PushDirection {
 }
 
 class Card {
+  static inline var sizeX : Float = 0.2;
+  static inline var sizeY : Float = 0.001;
+  static inline var sizeZ : Float = 0.3;
+  static inline var pad : Float = 0.05;
+  static inline var gridX : Float = sizeX + pad * 2;
+  static inline var gridZ : Float = sizeZ + pad * 2;
+
+  static public inline var width : Float = sizeX;
+  static public inline var height : Float = sizeZ;
+
+  static public inline var texWidth : Int = 200;
+  static public inline var texHeight : Int = 300;
+
   var mesh : h3d.scene.Mesh;
   var position : h3d.col.Point;
-
-  inline static var sizeX : Float = 0.2;
-  inline static var sizeY : Float = 0.001;
-  inline static var sizeZ : Float = 0.3;
-  inline static var pad : Float = 0.05;
-  public static inline var gridX : Float = sizeX + pad * 2;
-  public static inline var gridZ : Float = sizeZ + pad * 2;
-
-  public var width : Float = sizeX;
-  public var height : Float = sizeZ;
-  var texWidth : Int = 200;
-  var texHeight : Int = 300;
 
   public function new(?initialPosition : h3d.col.Point) {
     var primitive = new h3d.prim.Cube();
@@ -109,7 +110,7 @@ class Card {
   }
 
   public function pushAnotherCard(direction : PushDirection) {
-    var card = Presentation.findAnotherCardAt(this);
+    var card = Cards.findAnotherCardAt(this);
 
     if (card != null) {
       switch direction {

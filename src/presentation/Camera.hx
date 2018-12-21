@@ -1,4 +1,4 @@
-package controller;
+package presentation;
 
 class Camera {
   static var camera : h3d.Camera;
@@ -54,10 +54,10 @@ class Camera {
   }
 
   static function clampTarget() {
-    var tableMinX : Float = -Presentation.table.width * 0.5;
-    var tableMaxX : Float =  Presentation.table.width * 0.5;
-    var tableMinZ : Float = -Presentation.table.height * 0.5;
-    var tableMaxZ : Float =  Presentation.table.height * 0.5;
+    var tableMinX : Float = -Table.width * 0.5;
+    var tableMaxX : Float =  Table.width * 0.5;
+    var tableMinZ : Float = -Table.height * 0.5;
+    var tableMaxZ : Float =  Table.height * 0.5;
 
     targetPosition.x = M.clamp(targetPosition.x, tableMinX, tableMaxX);
     targetPosition.z = M.clamp(targetPosition.z, tableMinZ, tableMaxZ);
