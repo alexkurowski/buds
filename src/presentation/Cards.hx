@@ -10,7 +10,7 @@ class Cards {
   static public function init() {
     cards = [];
 
-    for (i in 1...50)
+    for (i in 1...10)
       create();
   }
 

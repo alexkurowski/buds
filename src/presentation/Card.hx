@@ -99,8 +99,8 @@ class Card {
   }
 
   public function putDown() {
-    snapToGrid();
     position.y = 0;
+    snapToGrid();
     pushAnotherCard(Right);
   }
 
